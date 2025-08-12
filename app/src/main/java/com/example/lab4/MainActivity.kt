@@ -51,7 +51,7 @@ fun TaskApp() {
                 .padding(DEFAULT_PADDING),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Título visible en la parte superior
+            // Título
             AppTitle()
 
             Spacer(modifier = Modifier.height(LARGE_SPACING))
@@ -210,7 +210,7 @@ private fun AddTaskButton(onClick: () -> Unit) {
     }
 }
 
-// Funciones puras siguiendo Clean Code
+// Funciones
 private fun isTaskValid(taskText: String): Boolean {
     return taskText.trim().isNotEmpty()
 }
@@ -239,7 +239,7 @@ fun TaskAppPreview() {
     }
 }
 
-// Constantes siguiendo convenciones de Clean Code
+// Constantes
 private const val EMPTY_STRING = ""
 private val DEFAULT_PADDING = 16.dp
 private val TASK_PADDING = 12.dp
