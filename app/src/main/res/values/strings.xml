@@ -1,7 +1,7 @@
 <resources>
     <!-- App Strings -->
     <string name="app_name">Lab4 Clean Task App</string>
-    <string name="app_title">Gestor de Tareas</string>
+    <string name="app_title">Gestiona tus tareas</string>
 
     <!-- Task Input Strings -->
     <string name="task_input_label">Nueva Tarea</string>
@@ -10,7 +10,7 @@
 
     <!-- Messages -->
     <string name="empty_tasks_message">No hay tareas aún. ¡Agrega tu primera tarea!</string>
-    <string name="empty_task_error">Por favor, escribe una tarea antes de agregar</string>
+    <string name="empty_task_error">MAMAGUEVO agrega una task</string>
 
     <!-- Content Descriptions -->
     <string name="background_description">Imagen de fondo de la aplicación</string>
