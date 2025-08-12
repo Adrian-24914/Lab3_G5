@@ -81,7 +81,7 @@ fun TaskApp() {
 @Composable
 private fun BackgroundImage() {
     Image(
-        painter = painterResource(id = R.drawable.background_image),
+        painter = painterResource(id = R.drawable.background_image1),
         contentDescription = stringResource(R.string.background_description),
         modifier = Modifier.fillMaxSize(),
         contentScale = ContentScale.Crop
@@ -94,7 +94,7 @@ private fun AppTitle() {
         text = stringResource(R.string.app_title),
         fontSize = TITLE_SIZE,
         fontWeight = FontWeight.Bold,
-        color = MaterialTheme.colorScheme.primary
+        color = MaterialTheme.colorScheme.onSurface
     )
 }
 
@@ -201,6 +201,7 @@ private fun AddTaskButton(onClick: () -> Unit) {
     Button(
         onClick = onClick,
         modifier = Modifier.fillMaxWidth()
+
     ) {
         Text(
             text = stringResource(R.string.add_button_text),

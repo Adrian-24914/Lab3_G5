@@ -4,13 +4,13 @@
     <string name="app_title">Gestiona tus tareas</string>
 
     <!-- Task Input Strings -->
-    <string name="task_input_label">Nueva Tarea</string>
+    <string name="task_input_label">Agregala bb</string>
     <string name="task_input_hint">Escribe tu tarea aquí...</string>
     <string name="add_button_text">Agregar</string>
 
     <!-- Messages -->
-    <string name="empty_tasks_message">No hay tareas aún. ¡Agrega tu primera tarea!</string>
-    <string name="empty_task_error">MAMAGUEVO agrega una task</string>
+    <string name="empty_tasks_message">No hay tareas...aun...te veooo</string>
+    <string name="empty_task_error">MAMAGUEVO TENES QUE AGREGAR ALGO</string>
 
     <!-- Content Descriptions -->
     <string name="background_description">Imagen de fondo de la aplicación</string>
