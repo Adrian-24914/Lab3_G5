@@ -11,6 +11,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.lab4.ui.theme.Lab4Theme
 
 class MainActivity : ComponentActivity() {
@@ -45,3 +47,19 @@ fun GreetingPreview() {
         Greeting("Android")
     }
 }
+
+
+
+//constantes para la pantalla
+private const val EMPTY_STRING = ""
+private val DEFAULT_PADDING = 16.dp
+private val TASK_PADDING = 12.dp
+private val LARGE_SPACING = 24.dp
+private val MEDIUM_SPACING = 16.dp
+private val SMALL_SPACING = 8.dp
+private val TASKS_DISPLAY_HEIGHT = 300.dp
+private val CARD_ELEVATION = 4.dp
+private val TASK_CARD_ELEVATION = 2.dp
+private val TITLE_SIZE = 28.sp
+private val BUTTON_TEXT_SIZE = 16.sp
+private val TASK_TEXT_SIZE = 16.sp
