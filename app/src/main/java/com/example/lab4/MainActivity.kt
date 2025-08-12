@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
@@ -22,6 +23,27 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import android.widget.Toast
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
+
 import com.example.lab4.ui.theme.Lab4Theme
 
 
@@ -35,10 +57,48 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun TaskApp(){
+fun TaskApp() {
     val tasks: SnapshotStateList<String> = remember { mutableStateListOf<String>() }
-    var newTask by rememberSaveable {mutableStateOf(EMPTY_STRING)}
+    var newTask by rememberSaveable { mutableStateOf(EMPTY_STRING) }
+    val currentContext = LocalContext.current
+
+    Box(modifier = Modifier.fillMaxSize()) {
+        // Imagen de fondo ocupando toda la pantalla
+        BackgroundImage()
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(DEFAULT_PADDING),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            // Título visible en la parte superior
+            AppTitle()
+
+            Spacer(modifier = Modifier.height(LARGE_SPACING))
+
+            // Lista de tareas existentes
+            TasksDisplayWithSnapshotList(tasksList = tasks)
+
+            Spacer(modifier = Modifier.height(LARGE_SPACING))
+
+            // Campo de texto y botón para agregar
+            TaskInputSectionWithSnapshot(
+                inputText = newTask,
+                onTextChange = { newTask = it },
+                onAddButtonClick = {
+                    if (isTaskValid(newTask)) {
+                        addTaskToSnapshotList(tasks, newTask)
+                        newTask = EMPTY_STRING
+                    } else {
+                        displayEmptyTaskError(currentContext)
+                    }
+                }
+            )
+        }
+    }
 }
+
 
 @Composable
 private fun BackgroundImage() {
