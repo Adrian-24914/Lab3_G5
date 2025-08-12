@@ -1,59 +1,36 @@
 package com.example.lab4
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import android.widget.Toast
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.TextUnit
-
 import com.example.lab4.ui.theme.Lab4Theme
-
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            TaskApp()
+            Lab4Theme {
+                TaskApp()
+            }
         }
     }
 }
@@ -101,12 +78,11 @@ fun TaskApp() {
     }
 }
 
-
 @Composable
 private fun BackgroundImage() {
     Image(
         painter = painterResource(id = R.drawable.background_image),
-        contentDescription = null,
+        contentDescription = stringResource(R.string.background_description),
         modifier = Modifier.fillMaxSize(),
         contentScale = ContentScale.Crop
     )
@@ -122,17 +98,147 @@ private fun AppTitle() {
     )
 }
 
-@Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
-    Lab4Theme {
-        Greeting("Android")
+private fun TasksDisplayWithSnapshotList(tasksList: SnapshotStateList<String>) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(TASKS_DISPLAY_HEIGHT),
+        elevation = CardDefaults.cardElevation(defaultElevation = CARD_ELEVATION)
+    ) {
+        if (isTasksListEmpty(tasksList)) {
+            EmptyTasksMessage()
+        } else {
+            TasksListContentWithSnapshot(tasksList = tasksList)
+        }
     }
 }
 
+@Composable
+private fun EmptyTasksMessage() {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = stringResource(R.string.empty_tasks_message),
+            color = MaterialTheme.colorScheme.onSurface
+        )
+    }
+}
 
+@Composable
+private fun TasksListContentWithSnapshot(tasksList: SnapshotStateList<String>) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(DEFAULT_PADDING),
+        verticalArrangement = Arrangement.spacedBy(SMALL_SPACING)
+    ) {
+        items(tasksList) { singleTask ->
+            SingleTaskItem(taskText = singleTask)
+        }
+    }
+}
 
-//constantes para la pantalla
+@Composable
+private fun SingleTaskItem(taskText: String) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        elevation = CardDefaults.cardElevation(defaultElevation = TASK_CARD_ELEVATION)
+    ) {
+        Text(
+            text = taskText,
+            modifier = Modifier.padding(TASK_PADDING),
+            fontSize = TASK_TEXT_SIZE
+        )
+    }
+}
+
+@Composable
+private fun TaskInputSectionWithSnapshot(
+    inputText: String,
+    onTextChange: (String) -> Unit,
+    onAddButtonClick: () -> Unit
+) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        elevation = CardDefaults.cardElevation(defaultElevation = CARD_ELEVATION)
+    ) {
+        Column(
+            modifier = Modifier.padding(DEFAULT_PADDING),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            TaskInputField(
+                currentText = inputText,
+                onTextChange = onTextChange
+            )
+
+            Spacer(modifier = Modifier.height(MEDIUM_SPACING))
+
+            AddTaskButton(onClick = onAddButtonClick)
+        }
+    }
+}
+
+@Composable
+private fun TaskInputField(
+    currentText: String,
+    onTextChange: (String) -> Unit
+) {
+    TextField(
+        value = currentText,
+        onValueChange = onTextChange,
+        label = { Text(stringResource(R.string.task_input_label)) },
+        placeholder = { Text(stringResource(R.string.task_input_hint)) },
+        modifier = Modifier.fillMaxWidth(),
+        singleLine = true
+    )
+}
+
+@Composable
+private fun AddTaskButton(onClick: () -> Unit) {
+    Button(
+        onClick = onClick,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Text(
+            text = stringResource(R.string.add_button_text),
+            fontSize = BUTTON_TEXT_SIZE
+        )
+    }
+}
+
+// Funciones puras siguiendo Clean Code
+private fun isTaskValid(taskText: String): Boolean {
+    return taskText.trim().isNotEmpty()
+}
+
+private fun addTaskToSnapshotList(tasksList: SnapshotStateList<String>, newTask: String) {
+    tasksList.add(newTask.trim())
+}
+
+private fun isTasksListEmpty(tasksList: SnapshotStateList<String>): Boolean {
+    return tasksList.isEmpty()
+}
+
+private fun displayEmptyTaskError(context: android.content.Context) {
+    Toast.makeText(
+        context,
+        context.getString(R.string.empty_task_error),
+        Toast.LENGTH_SHORT
+    ).show()
+}
+
+@Preview(showBackground = true)
+@Composable
+fun TaskAppPreview() {
+    Lab4Theme {
+        TaskApp()
+    }
+}
+
+// Constantes siguiendo convenciones de Clean Code
 private const val EMPTY_STRING = ""
 private val DEFAULT_PADDING = 16.dp
 private val TASK_PADDING = 12.dp
